@@ -2,33 +2,23 @@ import { useEffect, useState } from "react";
 import ButtonUtente from "./ButtonUtente";
 
 function App() {
+
 const [data, setData] = useState([]);
-const str=["users","posts", "photos"];
 
-const [content, setContent]= useState(str[0]);
-
-
-useEffect (() => {fetch('https://api.imgflip.com/get_memes/' + content)
+useEffect (() => {fetch("https://api.imgflip.com/get_memes")
 .then((response) => response.json())
-.then((json) => setData(json));}, [content])
-
-
-function show (stringhe) {
-  setContent(stringhe);
-  console.log("aggiornato");
-}
-
-console.log("componente caricata");
+.then((json) => setData(json.data.memes));}, [])
 
   return (
   <div>
-    <ButtonUtente azione={() =>show(str[0])} nome="Utenti"/>
-    <ButtonUtente azione={() =>show(str[1])} nome="Tweet" />
-    <ButtonUtente azione={() =>show(str[2])} nome="Commenti"/>
-    <div>Stiamo vedendo {content}</div>
-
-
-    {data.map( (elemento) => <pre>{JSON.stringify(elemento)}</pre> )}
+    <div>{data.map((elemento) => {
+      return (
+        <div key={elemento.id}> 
+          <div>ID:{elemento.id} NOME:{elemento.name}</div>
+        <img src={elemento.url}  width={"50%"} height={"50%"}/>
+        </div>
+      )
+    })}</div>
     </div>
   );
 }
